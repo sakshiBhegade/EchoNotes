@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture Transcriber</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}?v=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}?v=1">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        .dropdown-content {
+            display: none;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .title-container {
+            text-align: center;
+        }
+        .title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 3rem;
+            background-color: #1D283A;
+            color: #F2E5F5;
+            transition: color 0.5s;
+        }
+
+        .tagline {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 1.5rem;
+            background-color: #1D283A;
+            color: #F2E5F5;
+            transition: color 0.5s;
+        }
+
+        .saved-note {
+            background-color: #EDF4FB;
+            border: 1px solid #1D283A;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .saved-note.alternate-color {
+            background-color: #e9ecef;
+        }
+        .hovered-folder {
+            background-color: #d1d5db;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-oxford-blue to-alice-blue">
+    <div class="title-container">
+        <h1 class="title" id="title">EchoNotes</h1>
+        <p class="tagline" id="tagline">Taking Notes Just Got Smarter</p>
+    </div>
+
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="bg-gray-800 text-white w-64 flex flex-col">
+            <div class="p-6">
+                <h2 class="text-lg font-bold">Profile</h2>
+                <p class="mt-2">Username</p>
+                <p class="text-sm text-gray-400">admin@gmail.com</p>
+            </div>
+            <ul class="mt-10">
+                <li class="px-6 py-3 hover:bg-gray-700">
+                    <a href="/login" class="block">Logout</a>
+                </li>
+            </ul>
+            <ul class="mt-10">
+                <li class="px-6 py-3 hover:bg-gray-700">
+                    <a href="#" class="block">My Conversations</a>
+                </li>
+                <li class="px-6 py-3 hover:bg-gray-700 relative dropdown">
+                    <a href="#" class="block">Folders</a>
+                    <div class="dropdown-content absolute left-0 top-0 w-full bg-gray-700 rounded-md shadow-lg">
+                        <ul class="py-2" id="folderList">
+                            {% for folder in folders %}
+                            <li class="px-6 py-2 hover:bg-gray-600"><a href="{{ url_for('folder', folder_name=folder) }}">{{ folder }}</a></li>
+                            {% endfor %}
+                            <li class="px-6 py-2 hover:bg-gray-600">
+                                <button id="newFolderButton" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">New Folder</button>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="px-6 py-3 hover:bg-gray-700">
+                    <a href="#" class="block">Messaging</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Add the feature boxes -->
+        <div class="w-full flex flex-col">
+            <div class="feature-boxes-container flex justify-center my-8">
+                <div class="feature-box mx-4 bg-white rounded-lg shadow-md p-6 text-center max-w-xs">
+                    <div class="icon-container bg-green-500 text-white rounded-full p-4 mx-auto mb-4">
+                        <i class="fas fa-file-alt fa-2x"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Lecture Transcription</h3>
+                    <p class="text-gray-600">Easily transcribe lectures and discussions with our smart speech recognition technology.</p>
+                </div>
+
+                <div class="feature-box mx-4 bg-white rounded-lg shadow-md p-6 text-center max-w-xs">
+                    <div class="icon-container bg-blue-500 text-white rounded-full p-4 mx-auto mb-4">
+                        <i class="fas fa-project-diagram fa-2x"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Create Mind Maps</h3>
+                    <p class="text-gray-600">Generate mind maps from your text or documents with AI.</p>
+                    <a href="{{ url_for('create_mind_map') }}" class="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Create Mind Map</a>
+                </div>
+
+                <div class="feature-box mx-4 bg-white rounded-lg shadow-md p-6 text-center max-w-xs">
+                    <div class="icon-container bg-purple-500 text-white rounded-full p-4 mx-auto mb-4">
+                        <i class="fab fa-youtube fa-2x"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">YouTube Video Summarization</h3>
+                    <p class="text-gray-600">Convert YouTube videos to summarized notes with our powerful AI technology.</p>
+                </div>
+
+                <div class="feature-box mx-4 bg-white rounded-lg shadow-md p-6 text-center max-w-xs">
+                    <div class="icon-container bg-orange-500 text-white rounded-full p-4 mx-auto mb-4">
+                        <i class="fas fa-clipboard-list fa-2x"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Practice with Quizzes</h3>
+                    <p class="text-gray-600">Test your knowledge with quizzes generated from your notes.</p>
+                    <a href="{{ url_for('create_quiz') }}" class="mt-4 inline-block bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600">Create Quiz</a>
+                </div>
+
+            </div>
+
+            <!-- Main Content -->
+            <div class="container mx-auto p-6">
+                <h1 class="text-2xl font-bold mb-6">Lecture Transcriber</h1>
+                <div class="transcription-container mb-6">
+                    <h2 class="text-lg font-semibold">Transcription Result</h2>
+                    <div id="transcription" class="bg-white p-4 mt-2 border border-gray-300 rounded-md"></div>
+                    <audio id="audio_player" controls class="mt-4 hidden">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <br>
+                    <a id="download_link" href="#" download class="hidden bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mt-4">Download Audio</a>
+                </div>
+                <div class="flex justify-between items-center mb-6">
+                    <button id="startRecord" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Start Recording</button>
+                    <div id="recordingIcon" class="hidden w-6 h-6 bg-red-500 rounded-full animate-ping"></div>
+                    <button id="stopRecord" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600" disabled>Stop Recording</button>
+                    <button id="saveNote" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600" disabled>Save Note</button>
+                </div>
+                <div class="saved-notes-container">
+                    <!-- Saved notes will be added dynamically here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <form id="addNoteToFolderForm" class="hidden">
+        <label for="folderSelect">Select Folder:</label>
+        <select id="folderSelect" name="folder_name">
+            {% for folder in folders %}
+            <option value="{{ folder }}">{{ folder }}</option>
+            {% endfor %}
+        </select>
+        <textarea id="noteContent" name="note_content" placeholder="Enter note content..."></textarea>
+        <button type="submit">Add Note to Folder</button>
+    </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mind_map.js') }}"></script>
+</body>
+</html>
+{% endblock %}

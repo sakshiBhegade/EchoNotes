@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoNote Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000ff;
+            --pale-purple: #F2E5F5ff;
+            --hot-pink: #EE6FB3ff;
+            --air-force-blue: #5C96B7ff;
+            --alice-blue: #EDF4FBff;
+            --oxford-blue: #1D283Aff;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-bounce {
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .animate-pulse {
+            animation: pulse 1s infinite;
+        }
+
+        input:focus {
+            box-shadow: 0 0 5px rgba(92, 150, 183, 0.5);
+            transform: scale(1.01);
+        }
+
+        button {
+            background: linear-gradient(to right, var(--hot-pink), var(--air-force-blue));
+        }
+    </style>
+</head>
+<body class="bg-alice-blue flex items-center justify-center min-h-screen">
+    <div class="bg-white p-10 rounded-lg shadow-lg max-w-md w-full">
+        <h2 class="text-3xl font-bold mb-6 text-oxford-blue text-center animate-bounce">AI NOTE Login</h2>
+        <form id="login-form" class="space-y-6">
+            <div>
+                <label for="username" class="block text-oxford-blue font-semibold mb-2">Username</label>
+                <input type="text" id="username" class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-air-force-blue transition-all duration-300" required>
+            </div>
+            <div>
+                <label for="password" class="block text-oxford-blue font-semibold mb-2">Password</label>
+                <input type="password" id="password" class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-air-force-blue transition-all duration-300" required>
+            </div>
+            <button type="submit" class="w-full text-white py-3 rounded-lg hover:bg-air-force-blue transition duration-300 animate-pulse">Login</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Send the login data to the server for authentication
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Redirect to the main page or perform other actions
+                    window.location.href = '/';
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while logging in.');
+            });
+        });
+    </script>
+</body>
+</html>

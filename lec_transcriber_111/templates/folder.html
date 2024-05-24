@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ folder_name }}</h1>
+
+<h2>Notes</h2>
+<ul>
+    {% for note in notes %}
+    <li>
+        <a href="{{ url_for('static', filename=os.path.join('folders', folder_name, note)) }}">{{ note }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>Audio Files</h2>
+<ul>
+    {% for audio in audio_files %}
+    <li>
+        <audio controls>
+            <source src="{{ url_for('static', filename=os.path.join('folders', folder_name, audio)) }}" type="audio/mpeg">
+        </audio>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

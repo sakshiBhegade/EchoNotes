@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-6">Create Mind Map</h1>
+    <div class="mb-6">
+        <textarea class="form-control" id="mindMapInput" rows="5" placeholder="Enter your text or document here..."></textarea>
+    </div>
+    <div class="flex justify-end">
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" id="generateMindMap">Generate Mind Map</button>
+    </div>
+    <div class="mt-6" id="mindMapResult"></div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ url_for('static', filename='js/mind_map.js') }}"></script>
+{% endblock %}

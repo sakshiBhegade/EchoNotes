@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            overflow: hidden;
+        }
+        #main {
+            background: #fff;
+            color: #333;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            display: inline-block;
+            background: #5cb85c;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="main">
+            <h2>Create Quiz</h2>
+            <form method="post" action="{{ url_for('create_quiz') }}">
+                <label for="note_content">Paste your note content here:</label>
+                <textarea name="note_content" id="note_content" rows="10" required></textarea>
+                <button type="submit">Generate Quiz</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            overflow: hidden;
+        }
+        #main {
+            background: #fff;
+            color: #333;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question p {
+            font-weight: bold;
+        }
+        .question div {
+            margin: 5px 0;
+        }
+        button {
+            display: inline-block;
+            background: #5cb85c;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #4cae4c;
+        }
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<div class="container">
+    <div id="main">
+        <h2>Quiz</h2>
+        <form id="quiz-form" method="post" action="{{ url_for('submit_quiz') }}">
+            {% for question in quiz %}
+            <div class="question">
+                <p>{{ loop.index }}. {{ question.message }}</p>
+                {% for choice in question.choices %}
+                <div>
+                    <input type="radio" name="question{{ loop.index }}" value="{{ choice }}" id="question{{ loop.index }}_{{ loop.index0 }}">
+                    <label for="question{{ loop.index }}_{{ loop.index0 }}">{{ choice }}</label>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            <button type="submit">Submit Quiz</button>
+        </form>
+
+        <div id="result" style="display: none;">
+            <p>Your score: <span id="score"></span> out of <span id="total"></span></p>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+
+
+{% endblock %}
+
